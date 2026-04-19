@@ -22,29 +22,21 @@ setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000);
 
-// create a middleware function that checks the number of requests made by a user in a single second
-app.use(function (req, res, next) {
-    // get the user id from the headers of the request object and store it in userId variable
-    const userId = req.headers["user-id"];
-
-    // check if the user id is present in the numberOfRequestsForUser object and the number of requests made by the user is greater than 5 in a single second 
-    if (numberOfRequestsForUser[userId] > 5) {
-        // increment the number of requests made by the user by 1
-        numberOfRequestsForUser[userId]++;
-
-        // check if the number of requests made by the user is greater than 5 in a single second then send a 404 status code with message "No Entry!" as response to the user
-        if(numberOfRequestsForUser[userId] > 5) {
-            res.status(404).send("No Entry!");
-        } else {
-            next(); // call the next middleware function in the stack
+app.use(function (req, res, next){
+    const userID = req.headers["user-id"];
+    if(numberOfRequestsForUser[userID]){
+        numberOfRequestsForUser[userID] = numberOfRequestsForUser[userID] +1;
+        if(numberOfRequestsForUser[userID] > 5){
+            res.status(404).send("No entry, Too many requests !!");
+        } 
+        else{
+            next();
         }
-    } else {
-        // increment the number of requests made by the user by 1 and call the next middleware function in the stack
-        numberOfRequestsForUser[userId] = 1;
+    }else{
+        numberOfRequestsForUser[userID] = 1;
         next();
     }
 });
-
 // create a route for GET request on /user path
 app.get("/user", function (req, res) {
     // return a json response with name as Bharat
