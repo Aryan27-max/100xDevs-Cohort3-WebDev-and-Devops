@@ -29,10 +29,10 @@ app.get("/errorCount", function (req, res) {
 });
 
 // Error Handling Middleware
-app.use((err, req, res, next) => {
-    res.status(404).send({});
-    errorCount++;
-});
+app.use(function (err, req, res, next){
+    res.status(404).send({})
+    errorCount = errorCount + 1;
+})
 
 // Start the server on port 3000
 app.listen(3000);
