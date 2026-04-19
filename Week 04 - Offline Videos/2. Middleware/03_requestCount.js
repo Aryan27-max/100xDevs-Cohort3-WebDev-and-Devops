@@ -15,18 +15,15 @@ const app = express();
 let requestCount = 0;
 
 // create a middleware function that increments the requestCount by 1 for every request made to the server
-app.use(function (req, res, next) {
-    // increment the requestCount by 1
+app.use(function(req, res, next){
     requestCount = requestCount + 1;
-
-    // call the next middleware function in the stack
     next();
 });
 
 // create a route for GET request on /user path
 app.get("/user", function (req, res) {
     // return a json response with name as Bharat
-    res.status(200).json({ name: "Bharat" });
+    res.status(200).json({ name: "Aryan" });
 });
 
 // create a route for POST request on /user path
@@ -42,4 +39,5 @@ app.get("/requestCount", function (req, res) {
 });
 
 // Start the server on port 3000
-app.listen(3000);
+
+module.exports = app;
